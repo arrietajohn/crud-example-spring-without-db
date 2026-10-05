@@ -105,3 +105,81 @@ mvn clean verify
 ```
 
 El reporte de JaCoCo se genera en `target/site/jacoco/index.html`.
+
+# Guía de Ejecución con Docker
+
+Puedes ejecutar la imagen que ya construyó Docker Compose directamente con `docker run`.
+
+## 1. Confirmar que la imagen existe
+
+Verifica que la imagen esté disponible en tu sistema:
+
+```bash
+docker images
+```
+
+El nombre de la imagen generada por Docker Compose es:
+`crud-example-spring-without-db-user-api:latest`
+
+## 2. Ejecutar el contenedor
+
+Inicia el contenedor en segundo plano (PowerShell):
+
+```powershell
+docker run -d `
+  --name user-api `
+  -p 8080:8080 `
+  crud-example-spring-without-db-user-api:latest
+```
+
+*(Nota: Si usas Bash o Linux, cambia el acento grave `` ` `` por una barra invertida `\` para los saltos de línea).*
+
+## 3. Verificar estado y logs
+
+Comprueba que el contenedor esté corriendo y revisa su salida:
+
+```bash
+docker ps
+docker logs -f user-api
+```
+
+## 4. Acceder a la aplicación
+
+Una vez iniciado, puedes ingresar a las siguientes rutas en tu navegador:
+
+* [Swagger UI](http://localhost:8080/swagger-ui.html)
+* [API Docs](http://localhost:8080/api-docs)
+
+## 5. Control del Contenedor
+
+### Detener y volver a iniciar
+```bash
+docker stop user-api
+docker start user-api
+```
+
+### Eliminar el contenedor
+```bash
+docker rm -f user-api
+```
+
+---
+
+## Opciones Alternativas
+
+### Construir la imagen sin usar Compose desde el principio
+Si prefieres construir la imagen manualmente con Dockerfile:
+
+```bash
+docker build -t user-api:latest .
+docker run -d --name user-api -p 8080:8080 user-api:latest
+```
+
+### Usar un puerto diferente
+Si el puerto `8080` está ocupado en tu equipo, puedes publicar otro puerto asignado al contenedor (por ejemplo, el `8081`):
+
+```bash
+docker run -d --name user-api -p 8081:8080 user-api:latest
+```
+
+En este caso, Swagger quedará disponible en [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html).
