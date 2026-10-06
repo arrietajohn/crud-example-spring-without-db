@@ -15,7 +15,7 @@ RUN addgroup --system spring && adduser --system spring --ingroup spring
 USER spring:spring
 
 WORKDIR /application
-COPY --from=build /workspace/target/api-rest-crud-basic-spring-boot-1.0.0-SNAPSHOT.jar application.jar
+COPY --from=build /workspace/target/*.jar application.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/application/application.jar"]
